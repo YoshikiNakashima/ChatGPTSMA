@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>認証コード取得</title>
+    <script>
+        // ページがロードされたときに実行される関数
+        window.onload = function() {
+            // 現在のURLを取得
+            var currentUrl = window.location.href;
+
+            // URLからクエリパラメータを抽出
+            var params = new URLSearchParams(currentUrl.split('?')[1]);
+
+            // 'code' と 'state' の値を取得
+            var code = params.get('code');
+            var state = params.get('state');
+
+            // 結果を表示
+            document.getElementById('code').textContent = 'Code: ' + code;
+            document.getElementById('state').textContent = 'State: ' + state;
+        };
+    </script>
+</head>
+<body>
+    <h1>同意ありがとうございました</h1>
+    <p id="code"></p>
+    <p id="state"></p>
+</body>
+</html>
