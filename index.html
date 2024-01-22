@@ -2,29 +2,47 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>認証コード取得</title>
-    <script>
-        // ページがロードされたときに実行される関数
-        window.onload = function() {
-            // 現在のURLを取得
-            var currentUrl = window.location.href;
-
-            // URLからクエリパラメータを抽出
-            var params = new URLSearchParams(currentUrl.split('?')[1]);
-
-            // 'code' と 'state' の値を取得
-            var code = params.get('code');
-            var state = params.get('state');
-
-            // 結果を表示
-            document.getElementById('code').textContent = 'Code: ' + code;
-            document.getElementById('state').textContent = 'State: ' + state;
-        };
-    </script>
+    <title>Fitbit Access Token取得</title>
 </head>
 <body>
-    <h1>同意ありがとうございました</h1>
-    <p id="code"></p>
-    <p id="state"></p>
+    <h1>Fitbit Access Token取得</h1>
+    <button onclick="redirectToFitbitAuth()">Fitbitで認証</button>
+    <p id="accessToken"></p>
+    <script>
+        function redirectToFitbitAuth() {
+            var clientId = '23QRMR';
+            var redirectUri = encodeURIComponent('https://www.fitbit.com/oauth2/authorize');
+            var scope = encodeURIComponent('ACTIVITY NUTRITION HEARTRATE LOCATION NUTRITION PROFILE SETTINGS SLEEP SOCIAL WEIGHT');
+            var responseType = 'code';
+            var authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&prompt=login consent`;
+            window.location.href = authUrl;
+        }
+        window.onload = function() {
+            var params = new URLSearchParams(window.location.search);
+            var code = params.get('code');
+            if (code) {
+                getAccessToken(code);
+            }
+        };
+        function getAccessToken(code) {
+            var clientId = '23QRMR';
+            var clientSecret = 'a0aa6853cf11d080ba1727ef46404313';
+            var redirectUri = 'https://www.fitbit.com/oauth2/authorize';
+            var headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(clientId + ':' + clientSecret));
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            var body = `clientId=${clientId}&grant_type=authorization_code&redirect_uri=${encodeURIComponent(redirectUri)}&code=${code}`;
+            fetch('https://api.fitbit.com/oauth2/token', {
+                method: 'POST',
+                headers: headers,
+                body: body
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('accessToken').textContent = 'Access Token: ' + data.access_token;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
