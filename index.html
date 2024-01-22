@@ -11,7 +11,7 @@
     <script>
         function redirectToFitbitAuth() {
             var clientId = '23QRMR';
-            var redirectUri = encodeURIComponent('https://www.fitbit.com/oauth2/authorize');
+            var redirectUri = encodeURIComponent('https://yoshikinakashima.github.io/ChatGPTSMA/');
             var scope = encodeURIComponent('activity heartrate nutrition oxygen_saturation respiratory_rate settings sleep temperature weight');
             var responseType = 'code';
             var authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&prompt=login consent`;
