@@ -12,7 +12,7 @@
         function redirectToFitbitAuth() {
             var clientId = '23QRMR';
             var redirectUri = encodeURIComponent('https://www.fitbit.com/oauth2/authorize');
-            var scope = encodeURIComponent('ACTIVITY CARDIO_FITNESS ELECTROCARDIOGRAM HEARTRATE NUTRITION OXYGEN_SATURATION PROFILE RESPIRATORY_RATE SETTINGS SOCIAL TEMPERATURE WEIGHT');
+            var scope = encodeURIComponent('activity heartrate nutrition oxygen_saturation respiratory_rate settings sleep temperature weight');
             var responseType = 'code';
             var authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&prompt=login consent`;
             window.location.href = authUrl;
